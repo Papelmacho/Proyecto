@@ -1,0 +1,26 @@
+/////*************Que tiene que hacer el programa?********\\\\\\\\\
+
+1)Usar los grafos para generar un mapa de todas
+ las cafeterias de cu.
+2)Dependiendo la cafeteria que indique el usuario
+ se trazara la ruta mas corta tomando como punto
+  de inicio el cibarum" y como punto final la
+   cafeteria deseada.
+3)El usuario  colocara una cantidad en entero
+ y en base a esto el programa mostrara las cafeterias
+  a las que puede acudir.
+4)El programa mostrara la lista de cafeterias disponibles
+5)El programa ordenara la lista dependiendo del campo seleccionado
+
+
+
+/////*************Como va a funcionar el programa?********\\\\\\\\\
+1)El programa puede mostrar antes de comenzar
+  la lista de cafeterias y en basea a eso se pueden ordenar
+   por nombre o precio
+
+2)El usuario tecleara la cantidad de dinero para el menu
+3)El programa muestra unicamente los nodos que posean un
+ valor igual o menor al atribudo precio de la estructura menu
+4)El programa le mostrara la ruta mas corta para llegar al destino
+////fin del progra\\\\
