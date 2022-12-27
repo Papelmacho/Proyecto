@@ -3,9 +3,10 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <assert.h>
 #include <stdio.h>
-
+#include <omp.h>
 
 
  typedef struct 
@@ -49,7 +50,7 @@ typedef struct Node_
 
 typedef struct
 {
-   int key;      ///< campo de indexado. En este ejemplo Data.val
+   Cafeteria cafe;      ///< campo de indexado. En este ejemplo Data.val
    size_t index; ///< índice del elemento en la tabla de datos
 } Pair;
 

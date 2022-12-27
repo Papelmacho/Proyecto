@@ -1,0 +1,9 @@
+\\\\\\\modificaciones///////
+Nota: en este documento se enumeraran los cambios hechos
+ al programa para su posterior documentacion
+
+
+
+*//...A  la estructura pair se le cambio el campo 
+val por el campo cafeteria pues con el se va a mover el grafo
+*//...A la funcion getKey se le modifico el campo para devolver uno de sus

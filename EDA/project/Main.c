@@ -1,3 +1,4 @@
+#include "graphDFS.c"
 int main()
 {
    // Inicializa la tabla de datos. <100,A>, <200,B>, ...

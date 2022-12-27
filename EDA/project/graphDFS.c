@@ -1,23 +1,3 @@
-/*Copyright (C) 
- * 
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * 
- * 2021 - francisco dot rodriguez at ingenieria dot unam dot mx
- */
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -69,10 +49,11 @@
  */
 typedef struct 
 {
-
-    char faultad_cercana[65];
-    char name[65];
-    Menu* menus;
+   int key;
+   char faultad_cercana[65];
+   char name[65];
+   Menu* menus;
+   int puntaje;
 
 }Cafeteria;
 /**************************************************************
@@ -115,7 +96,7 @@ typedef struct Node_
  */
 typedef struct
 {
-   int key;      ///< campo de indexado. En este ejemplo Data.val
+   Cafeteria cafe;      ///< campo de indexado. En este ejemplo Data.val
    size_t index; ///< índice del elemento en la tabla de datos
 } Pair;
 
@@ -270,8 +251,8 @@ void Vertex_SetFinished_time( Vertex* v, size_t time )
  * @return La llave asociada al vértice indicado.
  */
 int Vertex_GetKey( Vertex* v )
-{
-   return v->kv.key;
+{//en esta funcion  se va a cambiar
+   return v->kv.cafe.key;
 }
 
 /**
@@ -352,7 +333,7 @@ Graph* Graph_New( size_t size, eGraphType type )
          // La variable |vertices| sólo existe dentro de este if.
 
          for( size_t i = 0; i < g->size; ++i ){
-            vertices[ i ].kv.key = 0;
+            vertices[ i ].kv.cafe.key = 0;
             vertices[ i ].kv.index = 0;
             vertices[ i ].neighbors = NULL;
          }
@@ -415,7 +396,7 @@ void Graph_Print( Graph* g, int depth )
       // para simplificar la notación. 
 
       printf( "\n=== Vertex[ %ld ] ===\n", i );
-      printf( "<%d, %ld>\n", vertex->kv.key, vertex->kv.index );
+      printf( "<%d, %ld>\n", vertex->kv.cafe.key, vertex->kv.index );
 
       // LEVEL 0:
       printf( vertex->neighbors ? "Has neighbors\n" : "Has no neighbors\n" );
@@ -427,7 +408,7 @@ void Graph_Print( Graph* g, int depth )
          {
             DBG_PRINT( "Print():(Node:%p, (*Node.index:%ld, *Node.next:%p))\n", node, node->index, node->next );
             
-            printf( " %d ", g->vertices[ node->index ].kv.key );
+            printf( " %d ", g->vertices[ node->index ].kv.cafe.key );
 
             // LEVEL 2:
             if( depth > 1 )
@@ -455,7 +436,7 @@ void Graph_Print_bfs( Graph* g, int depth )
       // para simplificar la notación. 
 
       printf( "\n=== Vertex[ %ld ] ===\n", i );
-      printf( "<%d, %ld>\n", vertex->kv.key, vertex->kv.index );
+      printf( "<%d, %ld>\n", vertex->kv.cafe.key, vertex->kv.index );
       printf( "Distance:%d",Vertex_GetDistance(vertex) );
       printf( "Predecessor vertex[%d]",Vertex_GetPredecessor(vertex));
 
@@ -469,7 +450,7 @@ void Graph_Print_bfs( Graph* g, int depth )
          {
             DBG_PRINT( "Print():(Node:%p, (*Node.index:%ld, *Node.next:%p))\n", node, node->index, node->next );
             
-            printf( " %d ", g->vertices[ node->index ].kv.key );
+            printf( " %d ", g->vertices[ node->index ].kv.cafe.key );
 
             // LEVEL 2:
             if( depth > 1 )
@@ -497,7 +478,7 @@ void Graph_AddVertex( Graph* g, int key, size_t index )
    Vertex* vertex = &g->vertices[ g->len ];
    // para simplificar la notación 
 
-   vertex->kv.key     = key;
+   vertex->kv.cafe.key     = key;
    vertex->kv.index   = index;
    vertex->neighbors = NULL;
 
@@ -518,7 +499,7 @@ static int find( Vertex* vertices, size_t size, int key )
 {
    for( size_t i = 0; i < size; ++i ){
 
-      if( vertices[ i ].kv.key == key ) return i;
+      if( vertices[ i ].kv.cafe.key == key ) return i;
    }
 
    return -1;
@@ -601,7 +582,7 @@ Node* Graph_GetNeighborsByKey( Graph* g, int key )
 {
    for( size_t i = 0; i < g->len; ++i ){
 
-      if( g->vertices[ i ].kv.key == key ) return g->vertices[ i ].neighbors;
+      if( g->vertices[ i ].kv.cafe.key == key ) return g->vertices[ i ].neighbors;
    }
 
    return NULL;
@@ -621,7 +602,7 @@ Vertex* Graph_GetVertexByKey( Graph* g, int key )
 
    for( size_t i = 0; i < g->len; ++i ){
 
-      if( g->vertices[ i ].kv.key == key ) return &g->vertices[ i ];
+      if( g->vertices[ i ].kv.cafe.key == key ) return &g->vertices[ i ];
    }
 
    return NULL;
@@ -661,7 +642,7 @@ size_t Graph_GetIndexFromVertex( Graph* g, Vertex* v )
 
    size_t index;
    for( index = 0; index < g->len; ++index ){
-      if( g->vertices[ index ].kv.key == v->kv.key ) break;
+      if( g->vertices[ index ].kv.key == v->kv.cafe.key ) break;
    }
 
    assert( index < g->len );
