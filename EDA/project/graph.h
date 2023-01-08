@@ -16,9 +16,9 @@
     bool bolillo_tortilla;
     bool sopa;
     bool guisado;
-    bool postre
+    bool postre;
 
-}Menu;
+} Menu;
 /**
  * @brief Es la información de la cafeteria.
  */
@@ -29,7 +29,7 @@ typedef struct
     char name[65];
     Menu* menus;
 
-}Cafeteria;
+} Cafeteria;
 
 typedef enum
 {

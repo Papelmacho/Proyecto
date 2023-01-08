@@ -5,12 +5,6 @@
 #include <stdbool.h>
 
 #include "graph.h"
-
-
-// 20/06/21:
-// Esta versión no borra elementos
-// Esta versión no modifica los datos originales
-
 #ifndef PRINT_LEVEL
 #define PRINT_LEVEL 0
 #endif  
@@ -25,37 +19,9 @@
 #define DBG_PRINT( ... ) ;
 #endif  
 
-/**
- * @brief Es la información real.
- */
 
-//----------------------------------------------------------------------
-// Cafeteria stuff: 
-//----------------------------------------------------------------------
 
- typedef struct 
-{
-    double precio; //llave del lugar
-    bool bebida;
-    bool bolillo_tortilla;
-    bool sopa;
-    bool guisado;
-    bool postre
 
-}Menu;
-
-/**
- * @brief Es la información de la cafeteria.
- */
-typedef struct 
-{
-   int key;
-   char faultad_cercana[65];
-   char name[65];
-   Menu* menus;
-   int puntaje;
-
-}Cafeteria;
 /**************************************************************
 me parece que en este caso no es necesario  la estructura data
 pues donde se guardaran los datos va a ser en "Cafeteria"
@@ -70,57 +36,22 @@ typedef struct
 // Vertex stuff: 
 //----------------------------------------------------------------------
 
-/**
- * @brief Colores para el algoritmo BFS
- */
-typedef enum
-{
-   BLACK, ///< vértice no descubierto
-   GRAY,  ///< vértice descubierto
-   WHITE, ///< vértice visitado
-} eGraphColors;
+
 
 
 /**
  * @brief Declara lo que es un nodo (lo usa la clase Vertex).
  */
-typedef struct Node_
-{
-   size_t index;       ///< índice del elemento en la Slla de vértices
-   struct Node_ *next; ///< índice al nodo siguiente en la Slla simplemente enlazada
-} Node;
 
 /**
  * @brief Mantiene juntas la llave (que se usa a lo largo de todas las funciones
  * de los grafos) y el índice de la misma en la tabla de datos.
  */
-typedef struct
-{
-   Cafeteria cafe;      ///< campo de indexado. En este ejemplo Data.val
-   size_t index; ///< índice del elemento en la tabla de datos
-} Pair;
+
 
 /**
  * @brief Declara lo que es un vértice.
  */
-typedef struct
-{
-   Pair  kv;        ///< Par <key, index>: <Data.val, index (a la tabla de datos)>
-   Node* neighbors; ///< apunta al primer vecino, ¡no debe perderse!
-   Node* cursor;    ///< Nodo de movimiento libre (freewheel pointer)
-
-
-   // para el algoritmo BFS:
-
-   eGraphColors color;
-   int distance;
-   int predecessor;
-
-   // para el algoritmo DFS:
-   size_t discovery_time;
-   size_t finish_time;
-
-} Vertex;
 
 /**
  * @brief Devuelve el índice del vecino (correspondiente a la Slla de vértices) al 
@@ -146,10 +77,8 @@ typedef struct
    @endcode
    @note Esta función debe utilizarse únicamente cuando se recorra el grafo con las funciones Vertex_Start(), Vertex_End() y Vertex_Next().
  */
-size_t Vertex_Get( const Vertex* v )
-{
+size_t Vertex_Get( const Vertex* v){
    assert( v->cursor );
-
    return v->cursor->index;
 }
 
