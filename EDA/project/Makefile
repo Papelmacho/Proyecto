@@ -17,8 +17,8 @@ CFLAGS = -Wall -Wextra -std=c99
 INC_DIR = -I.
 LDFLAGS =
 LIBS =
-SOURCES = Main.c graphDFS.c yaml.c
-DEPS = graph.h  
+SOURCES = Main.c graphDFS.c yaml.c sll.c
+DEPS = graph.h sll.h 
 EXECUTABLE = salida.out
 OBJECTS = $(SOURCES:.c=.o)
 

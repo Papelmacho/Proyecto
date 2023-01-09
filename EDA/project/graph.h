@@ -6,7 +6,7 @@
 #include <stddef.h>
 #include <assert.h>
 #include <stdio.h>
-#include <omp.h>
+//#include <omp.h> ->>>de momento no es necesario
 
 
  typedef struct 
@@ -103,17 +103,9 @@ typedef struct
    size_t len;
 } Queue;
 
-typedef struct
-{
-    Node* first;
-    Node* last;
-    Node* cursor;
-    size_t len;
-}Sll;
+
 
 void bfs( Graph* g, Vertex* start );
-bool dfs( Graph* g, int key );
-static void dfs_recursive_non_topol( Graph* g, Vertex* v );
 static int find( Vertex* vertices, size_t size, int key );
 static bool find_index_in_vertex( Vertex* vertex, int index );
 bool Graph_AddEdge( Graph* g, int start, int finish );
@@ -136,11 +128,6 @@ void Queue_Enqueue( Queue* q, int item );
 bool Queue_IsEmtpy( Queue* q );
 bool Queue_IsFull( Queue* q );
 Queue* Queue_New( size_t size);
-void Sll_Delete(Sll** this);
-bool Sll_IsEmpty(Sll* this);
-Sll* Sll_new();
-void Sll_pop_front(Sll* this);
-void Sll_Push_front(Sll* this,int item);
 bool Vertex_End( const Vertex* v );
 size_t Vertex_Get( const Vertex* v );
 eGraphColors Vertex_GetColor( Vertex* v );

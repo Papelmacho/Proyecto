@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #include "graph.h"
+#include "sll.c"
 #ifndef PRINT_LEVEL
 #define PRINT_LEVEL 0
 #endif  
@@ -213,20 +214,6 @@ typedef enum
 /**
  * @brief Declara lo que es un grafo.
  */
-typedef struct
-{
-   Vertex* vertices; ///< Slla de vértices
-   size_t size;      ///< Tamaño de la Slla de vértices
-
-   /**
-    * Número de vértices actualmente en el grafo. 
-    * Como esta versión no borra vértices, lo podemos usar como índice en la
-    * función de inserción
-    */
-   size_t len;  
-
-   eGraphType type; ///< tipo del grafo, UNDIRECTED o DIRECTED
-} Graph;
 
 /**
  * @brief Crea un nuevo grafo.
@@ -712,143 +699,41 @@ void bfs( Graph* g, Vertex* start )
 // BSF stuff: 
 //----------------------------------------------------------------------
 
-
-// es la versión simple, es decir, no es para el ordenamiento topológico
-static void dfs_recursive_non_topol( 
-      Graph* g,    // pasamos el grafo para usar las funciones de su API
-      Vertex* v )  // es el vértice de trabajo
+void Graph_Print_bfs( Graph* g, int depth )
 {
-   printf( "PROCESSING VERTEX WITH KEY: %d\n", Vertex_GetKey( v ) );
-   // procesamos al vértice (lo "visitamos")
-
-   Vertex_SetColor( v, GRAY );
-
-   // recorremos la Slla de vecinos:
-   for( Vertex_Start( v ); !Vertex_End( v ); Vertex_Next( v ) )
-   {
-      size_t v_as_idx = Vertex_Get( v );
-      Vertex* w = Graph_GetVertexByIndex( g, v_as_idx );
-
-      if( Vertex_GetColor( w ) == BLACK )
-      {
-         printf( "Visiting: %ld\n", v_as_idx );
-
-         Vertex_SetPredecessor( w, Graph_GetIndexFromVertex( g, v ) );
-
-         dfs_recursive_non_topol( g, w );
-      }
-   }
-   
-   Vertex_SetColor( v, WHITE );
-}
-
-bool dfs( Graph* g, int key )
-{
-   
-   // recorre de forma lineal la Slla de vértices para limpiarla
    for( size_t i = 0; i < g->len; ++i )
    {
+      Vertex* vertex = &g->vertices[ i ];
+      // para simplificar la notación. 
 
-      Vertex* vertex = Graph_GetVertexByIndex( g, i );
+      printf( "\n=== Vertex[ %ld ] ===\n", i );
+      printf( "<%d, %ld, %d, %d>\n", vertex->kv.key, vertex->kv.index, vertex->distance, vertex->predecessor );
 
-      Vertex_SetColor( vertex, BLACK );
-      Vertex_SetDistance( vertex, 0 );
-      Vertex_SetPredecessor( vertex, -1 );
+      // LEVEL 0:
+      printf( vertex->neighbors ? "Has neighbors\n" : "Has no neighbors\n" );
 
-      Vertex_SetDiscovery_time( vertex, 0 );
-      Vertex_SetFinished_time( vertex, 0 );
-   }
-
-   Vertex* start = Graph_GetVertexByKey( g, key );
-   if( start ){
-      dfs_recursive_non_topol( g, start );
-   }
-
-   return false;
-}
-//----------------------------------------------------------------------
-// Sll stuff 
-//----------------------------------------------------------------------
-typedef struct
-{
-    Node* first;
-    Node* last;
-    Node* cursor;
-    size_t len;
-}Sll;
-
-Sll* Sll_new()
-{
-    Sll* Sll=malloc(sizeof(Sll));
-    if(Sll)
-    {
-        Sll->first=Sll->last=Sll->cursor=NULL;
-        Sll->len=0;
-    }
-    return Sll;
-}
-
-bool Sll_IsEmpty(Sll* this)
-{
-    return this->first==NULL;
-}
-
-void Sll_Delete(Sll** this)
-{
-    assert(*this);
-    Sll* lst=*this;
-    while(lst->first != NULL)
-    {
-      Node* tmp=lst->first->next;
-      free(lst->first);
-      lst->first=tmp;
-    }
-    free(lst);
-    lst=NULL;
-}
-static Node* newNode(int item)
-{
-   Node* n=(Node*) malloc(sizeof(Node));
-   if(n)
-   {
-      n->index=item;
-      n->next=NULL;
-   }
-   return n;
-}
-void Sll_Push_front(Sll* this,int item)
-{
-   //Node* n = (Node*) calloc( 1, sizeof( Node ) );
-    Node* n= newNode(item);
-    if(Sll_IsEmpty(this))
-    {
-        this->first=this->last=this->cursor=n;
-    }else
-        {
-            n->next=this->first;
-            this->last->next=n;
-            this->first=n;
+      // LEVEL 1:
+      if( depth > 0 )
+      {
+         for( Node* node = vertex->neighbors; node != NULL; node = node->next )
+         {
+            //DBG_PRINT( "Print():(Node:%p, (*Node.index:%ld, *Node.next:%p))\n", node, node->index, node->next );
             
-        }
-        this->len++;
+            printf( " %d ", g->vertices[ node->index ].kv.key );
+
+            // LEVEL 2:
+            if( depth > 1 )
+            {
+               printf( "(Node:%p) ", node );
+            }
+
+            printf( "->" );
+         } if( vertex->neighbors ) printf( " Nil\n" );
+      }
+   } printf( "\n" );
 }
 
-void Sll_pop_front(Sll* this)
-{
-    assert(this);
-    if(this->first==this->last)
-    {
-        free(this->first);
-        this->first=this->last=this->cursor=NULL;
-    }else
-        {
-            Node* right=this->first->next;
-            free(this->first);
-            this->first=right;
-            
-        }
-    --this->len;
-}
+
 
 //----------------------------------------------------------------------
 // Driver program 
