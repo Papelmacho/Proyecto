@@ -24,11 +24,10 @@
  */
 typedef struct 
 {
-
-    char faultad_cercana[65];
-    char name[65];
-    Menu* menus;
-
+   int id;   ///< campo de indexado (key) para los vértices
+   double quality_score; ///< calidad del establecimiento
+   char* nearly[65]; ///< punto cercano
+   char* name[65]; ///< nombre de la cafeteria
 } Cafeteria;
 
 typedef enum
