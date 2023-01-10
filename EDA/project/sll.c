@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "sll.h"
+#include <assert.h>
 
 Sll* Sll_new()
 {
@@ -14,7 +15,7 @@ Sll* Sll_new()
 
 bool Sll_IsEmpty(Sll* this)
 {
-    return this->first==NULL;
+    return this->len==0;
 }
 
 void Sll_Delete(Sll** this)
